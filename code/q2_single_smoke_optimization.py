@@ -234,6 +234,62 @@ def optimize_once(p: Parameters, seed: int, maxiter: int, popsize: int) -> tuple
     return best_x, -float(min(local.fun, result.fun)), history
 
 
+def refine_outward_basin(p: Parameters) -> tuple[np.ndarray, float, list[float]]:
+    """Independently refine the +x heading basin found by geometric screening."""
+    targets = target_rims(p, 360)
+    history: list[float] = []
+    lower = np.array([-0.20, p.speed_min, 0.0, 0.0])
+    upper = np.array([0.30, p.speed_max, 5.0, 2.0])
+
+    def to_x(y: np.ndarray) -> np.ndarray:
+        heading, speed, release_time, delay = y
+        return np.array([heading, speed, release_time + delay, delay])
+
+    def objective(y: np.ndarray) -> float:
+        if np.any(y < lower) or np.any(y > upper):
+            return 50.0 + float(np.maximum(lower - y, 0.0).sum() + np.maximum(y - upper, 0.0).sum())
+        x = to_x(y)
+        value = duration(x, p, targets, coarse_step=0.01)
+        if value > 0.0:
+            return -value
+        state = decode(x, p)
+        probe = np.linspace(float(state["explosion_time"]), float(state["explosion_time"]) + 8.0, 121)
+        return float(distances_over_time(probe, x, p, targets).min() - p.cloud_radius) / 100.0
+
+    initial = np.array([0.10, 135.0, 1.00, 0.05])
+
+    def callback(yk: np.ndarray) -> None:
+        history.append(max(0.0, -objective(yk)))
+
+    result = minimize(
+        objective,
+        initial,
+        method="Nelder-Mead",
+        callback=callback,
+        options={"maxiter": 2500, "xatol": 1e-10, "fatol": 1e-10},
+    )
+    polished = result.x.copy()
+    if 0.0 <= polished[3] < 1e-8:
+        polished[3] = 0.0
+
+    def boundary_objective(z: np.ndarray) -> float:
+        y = np.array([z[0], p.speed_max, z[1], z[2]])
+        return objective(y)
+
+    boundary = minimize(
+        boundary_objective,
+        np.array([polished[0], polished[2], polished[3]]),
+        method="Nelder-Mead",
+        callback=lambda zk: history.append(max(0.0, -boundary_objective(zk))),
+        options={"maxiter": 1800, "xatol": 1e-10, "fatol": 1e-10},
+    )
+    boundary_y = np.array([boundary.x[0], p.speed_max, boundary.x[1], boundary.x[2]])
+    if boundary.fun < result.fun:
+        polished = boundary_y
+    x = to_x(polished)
+    return x, duration(x, p, targets, coarse_step=0.005), history
+
+
 def configure_plotting() -> None:
     available = {f.name for f in font_manager.fontManager.ttflist}
     chinese = next(
@@ -282,8 +338,10 @@ def make_figure(p: Parameters, x: np.ndarray, result: dict, histories: list[list
     fig, axes = plt.subplots(1, 2, figsize=(7.1, 3.0), constrained_layout=True)
     ax = axes[0]
     for i, history in enumerate(histories, 1):
-        ax.plot(np.arange(1, len(history) + 1), history, lw=1.2, label=f"种子 {i}")
-    ax.set_xlabel("差分进化迭代次数")
+        label = f"种子 {i}" if i <= 3 else "外向盆地细化"
+        ax.plot(np.arange(1, len(history) + 1), history, lw=1.2, label=label)
+    ax.set_xlim(0, min(120, max(len(history) for history in histories)))
+    ax.set_xlabel("优化迭代次数")
     ax.set_ylabel("当前最优遮蔽时长 (s)")
     ax.grid(axis="y", color="#D9D9D9", lw=0.55)
     ax.spines[["top", "right"]].set_visible(False)
@@ -332,41 +390,30 @@ def solve(maxiter: int = 90, popsize: int = 11) -> dict:
                 "coarse_duration_s": f"{approx_duration:.9f}",
             }
         )
+    outward_x, outward_duration, outward_history = refine_outward_basin(p)
+    candidates.append((outward_x, outward_duration))
+    histories.append(outward_history)
+    run_rows.append(
+        {
+            "seed": "outward_geometric_start",
+            "heading_deg": f"{np.degrees(outward_x[0]) % 360.0:.9f}",
+            "speed_m_s": f"{outward_x[1]:.9f}",
+            "explosion_time_s": f"{outward_x[2]:.9f}",
+            "fuse_delay_s": f"{outward_x[3]:.9f}",
+            "coarse_duration_s": f"{outward_duration:.9f}",
+        }
+    )
     write_csv(OUT / "multistart.csv", run_rows)
     history_rows = [
         {"seed": seed, "iteration": iteration, "best_duration_s": f"{value:.9f}"}
-        for seed, history in zip(seeds, histories)
+        for seed, history in zip((*seeds, "outward_geometric_start"), histories)
         for iteration, value in enumerate(history, 1)
     ]
     write_csv(OUT / "optimization_history.csv", history_rows)
 
-    verification_targets = target_rims(p, 720)
     fine_targets = target_rims(p, 5760)
     fine = [(x, duration(x, p, fine_targets, coarse_step=0.01)) for x, _ in candidates]
     best_x, best_duration = max(fine, key=lambda item: item[1])
-
-    # All global runs approach the active lower bounds v=70 m/s and t_r=0.
-    # Optimize the remaining heading-delay pair at those bounds with a denser
-    # target mesh, then verify one-sided perturbations of the active bounds.
-    reduced = differential_evolution(
-        lambda y: -duration(
-            np.array([y[0], p.speed_min, y[1], y[1]]),
-            p,
-            verification_targets,
-            coarse_step=0.025,
-        ),
-        bounds=[(2.9, 3.3), (1.5, 4.0)],
-        seed=9025,
-        maxiter=70,
-        popsize=12,
-        tol=1e-9,
-        polish=True,
-        workers=1,
-    )
-    reduced_x = np.array([reduced.x[0], p.speed_min, reduced.x[1], reduced.x[1]])
-    if duration(reduced_x, p, fine_targets, coarse_step=0.01) > best_duration:
-        best_x = reduced_x
-        best_duration = duration(best_x, p, fine_targets, coarse_step=0.01)
     state = decode(best_x, p)
     intervals = effective_intervals(best_x, p, fine_targets, coarse_step=0.005)
     best_duration = float(sum(b - a for a, b in intervals))
@@ -385,14 +432,29 @@ def solve(maxiter: int = 90, popsize: int = 11) -> dict:
     write_csv(OUT / "convergence.csv", convergence_rows)
 
     boundary_rows: list[dict] = []
-    for speed_add, release_time in ((0.0, 0.0), (0.1, 0.0), (1.0, 0.0), (0.0, 0.01), (0.0, 0.10)):
+    perturbations = (
+        ("baseline", 0.0, 0.0, 0.0, 0.0),
+        ("heading_minus", -0.001, 0.0, 0.0, 0.0),
+        ("heading_plus", 0.001, 0.0, 0.0, 0.0),
+        ("speed_minus", 0.0, -0.1, 0.0, 0.0),
+        ("release_minus", 0.0, 0.0, -0.01, 0.0),
+        ("release_plus", 0.0, 0.0, 0.01, 0.0),
+        ("delay_minus", 0.0, 0.0, 0.0, -0.01),
+        ("delay_plus", 0.0, 0.0, 0.0, 0.01),
+    )
+    for name, heading_add, speed_add, release_add, delay_add in perturbations:
         trial = best_x.copy()
-        trial[1] = p.speed_min + speed_add
-        trial[2] = trial[3] + release_time
+        trial[0] += heading_add
+        trial[1] += speed_add
+        trial[2] += release_add + delay_add
+        trial[3] += delay_add
         boundary_rows.append(
             {
+                "case": name,
+                "heading_rad": f"{trial[0]:.9f}",
                 "speed_m_s": f"{trial[1]:.6f}",
-                "release_time_s": f"{release_time:.6f}",
+                "release_time_s": f"{trial[2]-trial[3]:.6f}",
+                "fuse_delay_s": f"{trial[3]:.6f}",
                 "duration_s": f"{duration(trial, p, fine_targets, coarse_step=0.01):.10f}",
             }
         )

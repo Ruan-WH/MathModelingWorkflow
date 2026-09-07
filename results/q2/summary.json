@@ -25,36 +25,36 @@
     "target_height": 10.0
   },
   "decision_variables": {
-    "heading_rad": 3.082967881710043,
-    "heading_deg_from_positive_x_counterclockwise": 176.6410479963731,
-    "speed_m_s": 70.0,
-    "release_time_s": 0.0,
-    "fuse_delay_s": 2.496793627781166,
-    "explosion_time_s": 2.496793627781166
+    "heading_rad": 0.08922163537438052,
+    "heading_deg_from_positive_x_counterclockwise": 5.1120231482071326,
+    "speed_m_s": 140.0,
+    "release_time_s": 0.8786196014125937,
+    "fuse_delay_s": 0.05311238364365252,
+    "explosion_time_s": 0.9317319850562462
   },
   "uav_velocity_m_s": [
-    -69.87974421208887,
-    4.101383772951829,
+    139.4431345423927,
+    12.474463074303694,
     0.0
   ],
   "release_point_m": [
-    17800.0,
-    0.0,
+    17922.51747129136,
+    10.96030777418083,
     1800.0
   ],
   "explosion_point_m": [
-    17625.524699940277,
-    10.240308869391203,
-    1769.4535057433297
+    17929.923628549648,
+    11.622856242731824,
+    1799.986177466048
   ],
   "full_target": {
     "intervals": [
       [
-        2.496793630661297,
-        7.039673605681803
+        0.931732176453628,
+        5.519794336543694
       ]
     ],
-    "duration_s": 4.542879975020506,
+    "duration_s": 4.588062160090066,
     "n_theta": 5760,
     "time_root_scan_step_s": 0.005
   },
