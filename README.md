@@ -87,17 +87,125 @@ MathModelingWorkflow/
 └── todo.md            # 逐题进度与验收清单
 ```
 
-## 快速开始
+## 环境要求
 
-### 1. 准备 Python 环境
+推荐在 **Windows 10/11** 上使用本项目，因为论文和 DrawIO 图指定中文为宋体、英文为 Times New Roman，Windows 的字体兼容性最好。Linux 和 macOS 也可以运行 Python 求解代码，但编译论文前需要自行配置兼容的中文字体。
 
-建议使用 Python 3.10 或更高版本：
+### 必需软件
 
-```bash
-pip install numpy scipy matplotlib
+| 环境 | 推荐版本或实现 | 用途 | 是否必需 |
+| --- | --- | --- | --- |
+| Python | Python 3.10 及以上，或 Anaconda/Miniconda | 数值计算、优化与科研绘图 | 必需 |
+| Python 包 | `numpy`、`scipy`、`matplotlib` | 当前问题一、二的求解与作图 | 必需 |
+| XeLaTeX | MiKTeX 或 TeX Live | 编译 CUMCM 中文论文 | 必需 |
+| Draw.io Desktop | 当前稳定版 | 编辑 `.drawio` 并导出 PDF/PNG | 修改流程图时必需 |
+| 宋体 | `SimSun` | 论文和流程图中的中文字体 | 必需 |
+| Times New Roman | 系统字体或 `paper/fonts/times/` | 英文、数字及西文公式字体 | 必需 |
+| Perl | Strawberry Perl 等 | 供 `latexmk` 自动多轮编译 | 可选 |
+| Poppler | `pdftoppm`、`pdfinfo` | 将 PDF 渲染为图片并检查版式 | 可选，推荐 |
+| Git | Git 2.x | 克隆仓库和版本管理 | 可选 |
+
+> 只想复现数值结果时，安装 Python 与三个 Python 包即可；要重新生成完整论文，需要额外安装 XeLaTeX 和所需字体；要修改流程图，则还需要 Draw.io Desktop。
+
+### Python 环境
+
+建议使用独立虚拟环境，避免与系统 Python 混用：
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install numpy scipy matplotlib
 ```
 
-### 2. 复现问题一
+如果使用 Anaconda，也可以执行：
+
+```powershell
+conda create -n mathmodel python=3.12 numpy scipy matplotlib -y
+conda activate mathmodel
+```
+
+检查 Python 环境：
+
+```powershell
+python --version
+python -c "import numpy, scipy, matplotlib; print('Python dependencies: OK')"
+```
+
+后续处理 Excel 附件时还需要 `pandas` 和 `openpyxl`，可执行：
+
+```powershell
+python -m pip install pandas openpyxl
+```
+
+### LaTeX 环境
+
+论文必须使用 **XeLaTeX** 编译，以正确处理中文和系统字体。Windows 推荐安装 MiKTeX，安装后先在 MiKTeX Console 中完成以下操作：
+
+1. 检查并安装 MiKTeX 更新；
+2. 刷新文件名数据库和字体映射；
+3. 将缺失宏包的安装策略设为询问或自动安装；
+4. 确认 MiKTeX 的 `bin/x64` 目录已加入 `PATH`。
+
+检查 LaTeX 环境：
+
+```powershell
+xelatex --version
+latexmk --version
+```
+
+`xelatex` 是必需的；`latexmk` 是可选的。MiKTeX 中的 `latexmk` 依赖 Perl，如果出现 `could not find the script engine 'perl'`，可以安装 Strawberry Perl，也可以直接使用两轮 XeLaTeX 编译，无须安装 Perl。
+
+当前模板主要使用 `ctex`、`fontspec`、`amsmath`、`graphicx`、`booktabs`、`hyperref` 和 `cleveref` 等宏包。MiKTeX 通常会在首次编译时提示安装缺失宏包。
+
+### Draw.io 环境
+
+流程图源文件位于 `diagrams/q1/` 和 `diagrams/q2/`。使用 Draw.io Desktop 打开 `.drawio` 文件即可编辑；论文引用的是同目录导出的 PDF，PNG 用于 GitHub 和人工预览。
+
+导出时保持以下设置：
+
+- 页面裁切到图形内容，背景为白色；
+- PDF 用于论文，PNG 用于预览；
+- 中文使用宋体，英文和数字使用 Times New Roman；
+- 当前竖向流程图源字号为 18 pt，插入论文缩放后约为小四 12 pt；
+- 公式变量使用斜体，函数名、数字、括号和单位使用正体。
+
+如果 Draw.io 命令行程序已加入 `PATH`，可以这样重新导出：
+
+```powershell
+drawio --export --crop --format pdf --output diagrams/q1/fig_flow_q1.pdf diagrams/q1/fig_flow_q1.drawio
+drawio --export --crop --format png --scale 2 --output diagrams/q1/fig_flow_q1.png diagrams/q1/fig_flow_q1.drawio
+```
+
+部分 Windows 安装只注册了 `DrawIO.exe` 而没有注册 `drawio` 命令；这种情况下可使用完整的程序路径，或直接在桌面应用中选择“文件 → 导出为”。
+
+### PDF 检查工具（推荐）
+
+项目验收会把论文 PDF 渲染成 PNG 逐页查看。只进行写作并不强制安装，但建议准备 Poppler，并确认以下任一命令可用：
+
+```powershell
+pdftoppm -v
+pdfinfo -v
+```
+
+MiKTeX 通常已经附带这两个工具。也可使用 MuPDF 的 `mutool` 或 ImageMagick 的 `magick` 作为替代。
+
+### 一次性环境自检
+
+```powershell
+python --version
+python -c "import numpy, scipy, matplotlib; print('Python dependencies: OK')"
+xelatex --version
+latexmk --version
+drawio --version
+pdftoppm -v
+```
+
+其中 `latexmk`、`drawio` 或 `pdftoppm` 检查失败，不会阻止 Python 数值程序运行；它们分别只影响自动编译、流程图导出和 PDF 视觉验收。
+
+## 快速开始
+
+### 1. 复现问题一
 
 在仓库根目录运行：
 
@@ -107,13 +215,23 @@ python code/q1_smoke_duration.py
 
 结果将写入 `results/q1/`，图片将写入 `figures/q1/`。
 
-### 3. 复现问题二
+### 2. 复现问题二
 
 ```bash
 python code/q2_single_smoke_optimization.py --maxiter 90 --popsize 11
 ```
 
 该步骤包含全局搜索、局部细化、边界检查和高密度圆柱轮廓复算，运行时间会明显长于问题一。
+
+### 3. 重新导出 DrawIO 流程图（可选）
+
+修改流程图后，应同时导出 PDF 和 PNG，并将论文使用的 PDF 同步到 `paper/figures/`。例如问题一：
+
+```powershell
+drawio --export --crop --format pdf --output diagrams/q1/fig_flow_q1.pdf diagrams/q1/fig_flow_q1.drawio
+drawio --export --crop --format png --scale 2 --output diagrams/q1/fig_flow_q1.png diagrams/q1/fig_flow_q1.drawio
+Copy-Item diagrams/q1/fig_flow_q1.pdf paper/figures/fig_flow_q1.pdf -Force
+```
 
 ### 4. 编译论文
 
