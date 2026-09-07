@@ -1,4 +1,4 @@
-# CUMCM
+# CUMCM 终端编译输入两遍的 xelatex -interaction=nonstopmode main.tex
 
 - LaTeX Template for China Undergraduate Mathematical Contest in Modeling
 - 中国大学生数学建模竞赛LaTeX模板

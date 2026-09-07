@@ -11,6 +11,9 @@
 % 用来加载宏包, 自定义命令等
 \input{commons/preamble.tex}
 
+% 正文普通段落统一首行缩进两个汉字宽度
+\setlength{\parindent}{2em}
+
 % 论文基本信息
 \input{contents/info.tex}
 %-----
@@ -28,7 +31,9 @@
 %\newpage
 %-----
 
-% 正文 -------
+% 正文：固定章节层级见 5writing skill。
+% s1 问题重述、问题分析；s2 模型假设、符号说明；s3 模型准备、问题一；
+% s4--s7 依次对应问题二至问题五；s8 为模型的评价与推广。
 \input{contents/sections/s1.tex}
 
 \input{contents/sections/s2.tex}
@@ -40,6 +45,10 @@
 \input{contents/sections/s5.tex}
 
 \input{contents/sections/s6.tex}
+
+\input{contents/sections/s7.tex}
+
+\input{contents/sections/s8.tex}
 %-----
 
 % 参考文献

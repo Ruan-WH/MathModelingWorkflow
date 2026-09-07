@@ -40,3 +40,33 @@
 - 数据图：`figures/q1/q1_occlusion_distance.pdf` 与 PNG 预览
 - 复现命令：`D:\Anaconda\python.exe code\q1_smoke_duration.py`
 
+## 问题 2
+
+### 最优策略
+
+- 航向角：从 +x 轴逆时针 176.641047996°，等价于从 -x 轴向 +y 偏转 3.358952004°。
+- FY1 速度：70.000000 m/s。
+- 投放时刻：0 s，即接令后立即投放。
+- 投放点：(17800.000000, 0.000000, 1800.000000) m。
+- 引信延时与起爆时刻：2.496793628 s。
+- 起爆点：(17625.524700, 10.240309, 1769.453506) m。
+- 完整圆柱遮蔽区间：[2.496793631, 7.039673606] s。
+- 最大有效遮蔽时长：4.542879975 s，按竞赛有效数字报告为 **4.543 s**。
+
+相较问题一给定策略的 1.391642669 s，问题二增加 3.151237306 s，提高约 226.4%。
+
+### 收敛与边界验证
+
+- 三个独立随机种子的全局搜索时长为 4.542616891、4.542867600、4.542833572 s，均收敛至同一策略邻域；在活跃边界上细化后得到 4.542879975 s。
+- 角向采样从每圆周 90 点加密至 1440 点，时长保持 4.542879993 s；加密至 5760 点仅变化 1.79e-8 s。
+- 速度增加到 70.1 m/s，时长降至 4.542794829 s；投放延后 0.01 s，时长降至 4.542390236 s，支持最低速度和立即投放为活跃最优边界。
+
+### 产物与复现
+
+- 程序：code/q2_single_smoke_optimization.py
+- 主结果：results/q2/summary.json
+- 多初值与历史：results/q2/multistart.csv、results/q2/optimization_history.csv
+- 收敛与边界检查：results/q2/convergence.csv、results/q2/active_bound_checks.csv
+- 作图数据：results/q2/optimal_margin_curve.csv
+- 数据图：figures/q2/q2_optimization_diagnostics.pdf 与 PNG 预览
+- 复现命令：D:\Anaconda\python.exe code\q2_single_smoke_optimization.py --maxiter 90 --popsize 11

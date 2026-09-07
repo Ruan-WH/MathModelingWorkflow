@@ -1,5 +1,106 @@
+\section{问题二模型建立和求解}
+
+\subsection{决策变量与约束}
+
+设 FY1 的航向角为 $\theta$，从 $x$ 轴正向逆时针计，水平单位方向向量为
+\begin{equation}
+    \bm e(\theta)=(\cos\theta,\sin\theta,0)^{\mathsf T}.
+\end{equation}
+为避免同时把投放点和起爆点作为冗余变量，选取
+\begin{equation}
+    \bm x=(\theta,v,t_e,\tau)^{\mathsf T}
+    \label{eq:q2-decision}
+\end{equation}
+作为决策变量，其中 $v$ 为无人机速度，$t_e$ 为起爆时刻，$\tau$ 为引信延时。投放时刻为 $t_r=t_e-\tau$，由此反算投放点与起爆点：
+\begin{align}
+    \bm r_r&=\bm u_0+v\bm e(\theta)(t_e-\tau), \\
+    \bm r_e&=\bm u_0+v\bm e(\theta)t_e
+    +(0,0,-\tfrac12g\tau^2)^{\mathsf T}.
+    \label{eq:q2-points}
+\end{align}
+设 M1 到达假目标原点的时刻为 $t_M=\lVert\bm m_0\rVert/300$，则可行域为
+\begin{equation}
+    0\le\theta<2\pi,\quad 70\le v\le140,\quad
+    0\le\tau\le t_e\le t_M,\quad
+    1800-\tfrac12g\tau^2\ge0.
+    \label{eq:q2-constraints}
+\end{equation}
+起爆后烟幕球心满足
+\begin{equation}
+    \bm c(t)=\bm r_e-(0,0,3(t-t_e))^{\mathsf T},\qquad
+    t_e\le t\le\min\{t_e+20,t_M\}.
+\end{equation}
+
+\subsection{优化模型与求解算法}
+
+沿用问题一的完整圆柱最坏视线距离 $D(t)$，将有效时刻集合定义为
+\begin{equation}
+    \Omega(\bm x)=\left\{t\in[t_e,\min\{t_e+20,t_M\}]:D(t;\bm x)\le10\right\}.
+\end{equation}
+问题二的优化模型为
+\begin{equation}
+    \max_{\bm x}\quad T_{\mathrm{eff}}(\bm x)
+    =\mu\!\left(\Omega(\bm x)\right),
+    \qquad \text{s.t.}\quad \cref{eq:q2-constraints},
+    \label{eq:q2-objective}
+\end{equation}
+其中 $\mu(\cdot)$ 表示时间区间并集的长度。由于大部分试探策略完全未命中视线，直接以遮蔽时长搜索会形成大面积零值平台。程序在尚未形成有效区间时，以烟幕球到最坏视线的最小超距作为连续引导；出现有效区间后，再切换为式\cref{eq:q2-objective} 的真实时长目标。采用三个独立随机种子的差分进化搜索，并对候选解作局部细化；最终以每个圆周 $5760$ 个角向点和 Brent 事件根重新计算。完整流程见\cref{fig:q2-flow}。
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.76\textwidth]{fig_flow_q2.pdf}
+    \caption{问题二单弹联合优化与可行性复核流程}
+    \label{fig:q2-flow}
+\end{figure}
+
+\subsection{最优投放策略}
+
+数值搜索得到航向角 $\theta=176.641048^{\circ}$，即相对 $x$ 轴负向偏向 $y$ 轴正向 $3.358952^{\circ}$；飞行速度取允许下界 $70\,\mathrm{m/s}$。最优策略在接令后立即投放，投放时刻 $t_r=0$，引信延时与起爆时刻均为 $2.496794\,\mathrm{s}$。相应速度向量、投放点和起爆点为
+\begin{align}
+    \bm v_U&=(-69.879744,\ 4.101384,\ 0)^{\mathsf T}\ \mathrm{m/s},\\
+    \bm r_r&=(17800.000,\ 0.000,\ 1800.000)^{\mathsf T}\ \mathrm{m},\\
+    \bm r_e&=(17625.524700,\ 10.240309,\ 1769.453506)^{\mathsf T}\ \mathrm{m}.
+\end{align}
+策略汇总见\cref{tab:q2-strategy}。
+
+\begin{table}[!htbp]
+    \centering
+    \caption{问题二 FY1 单枚烟幕弹优化策略}
+    \label{tab:q2-strategy}
+    \begin{tabular}{lc}
+        \toprule[1.5pt]
+        决策量或结果 & 数值 \\
+        \midrule[1pt]
+        航向角（$+x$ 轴逆时针） & $176.641048^{\circ}$ \\
+        FY1 速度 & $70.000000\,\mathrm{m/s}$ \\
+        投放时刻与投放点 & $0\,\mathrm{s}$；$(17800.000,0.000,1800.000)\,\mathrm{m}$ \\
+        起爆时刻与起爆点 & $2.496794\,\mathrm{s}$；$(17625.525,10.240,1769.454)\,\mathrm{m}$ \\
+        完全遮蔽区间 & $[2.496794,7.039674]\,\mathrm{s}$ \\
+        最大有效遮蔽时长 & $4.542880\,\mathrm{s}$ \\
+        \bottomrule[1.5pt]
+    \end{tabular}
+\end{table}
+
+完整圆柱从起爆后几乎立即进入完全遮蔽状态，于 $t=7.039674\,\mathrm{s}$ 离开有效烟幕范围，故
+\begin{equation}
+    T_{\mathrm{eff}}=7.039673606-2.496793631
+    =4.542879975\,\mathrm{s}\approx\boxed{4.543\,\mathrm{s}}.
+\end{equation}
+与问题一的给定策略相比，遮蔽时长增加 $3.151\,\mathrm{s}$，提高约 $226.4\%$。优化收敛过程及最优策略下的距离裕度见\cref{fig:q2-diagnostics}。
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.96\textwidth]{q2_optimization_diagnostics.pdf}
+    \caption{问题二多初值优化收敛与最优策略距离裕度}
+    \label{fig:q2-diagnostics}
+\end{figure}
+
+\subsection{收敛性与边界检验}
+
+三个独立随机种子所得时长分别为 $4.542617$、$4.542868$ 和 $4.542834\,\mathrm{s}$，随后在活跃边界上细化至 $4.542880\,\mathrm{s}$。圆周角向采样由 $90$ 加密至 $1440$ 时结果保持 $4.542879993\,\mathrm{s}$，加密至 $5760$ 后仅变化 $1.79\times10^{-8}\,\mathrm{s}$。对最优点作单侧扰动：速度增至 $70.1\,\mathrm{m/s}$ 时，时长降至 $4.542795\,\mathrm{s}$；投放延后 $0.01\,\mathrm{s}$ 时，降至 $4.542390\,\mathrm{s}$。这说明最低速度与立即投放是受题面约束限制的活跃最优边界。所有有效时刻均早于导弹到达假目标，且起爆高度为正，策略满足物理与时序约束。
+
 \endinput
-\section{公式}
+\section{问题二模型建立和求解}
 
 数学建模必然涉及不少数学公式的使用。下面简单介绍一个可能用得上的数学环境。
 
