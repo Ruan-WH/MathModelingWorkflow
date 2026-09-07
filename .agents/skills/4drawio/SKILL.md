@@ -25,7 +25,8 @@ allowed-tools: Bash(*), Read, Write, Edit, Grep, Glob, Agent, WebSearch, WebFetc
 
 - 只用黑白灰：背景 `#FFFFFF`，填充 `#FFFFFF/#F2F2F2`，文字与主边框 `#111111`，辅助线 `#666666`。禁止鲜艳色、渐变、阴影和装饰图标。
 - 主节点边框与连接线 2–2.5 pt，分组框 1.5–2 pt；箭头清楚，不用发丝细线。
-- 字体统一，并按论文最终插入尺寸验收。DrawIO 源图节点通常使用 16–18 pt，开始/结束节点可用 18–20 pt，分支标签不低于 14 pt；缩放插入论文后，节点正文的视觉字号不得低于论文图注字号，建议保持约 9–11 pt。文字限制 1–2 行，优先动宾短语。
+- 字体按论文规范混排，并按最终插入尺寸验收：中文使用宋体（`SimSun`），英文、数字和西文标点使用 Times New Roman；最终视觉字号统一为小四（12 pt）。DrawIO 源图可根据插入缩放比例补偿字号，例如当前约 `0.76\textwidth` 的竖向流程图使用 18 pt 源字号，缩放后约为 12 pt。文字限制 1–2 行，优先动宾短语。
+- 含中英文或公式的节点使用 HTML 富文本分别指定字体。数学变量用 Times New Roman 斜体，函数名、运算符、括号、数字和单位用 Times New Roman 正体；上下标位置规范，数值与单位之间留空格。不得用普通文本把整段公式都设为斜体，也不得让中文回退到西文字体。
 - 整图只采用自上而下或自左向右一种主方向。
 - 使用正交连接线并减少折点；线不得穿过节点，尽量不交叉。
 - 紧凑排版：同级节点等宽等高并对齐；节点间距约 20–32 px，层级间距 28–45 px，外边距 16–24 px。
@@ -35,8 +36,8 @@ allowed-tools: Bash(*), Read, Write, Edit, Grep, Glob, Agent, WebSearch, WebFetc
 推荐样式：
 
 ```text
-节点：fillColor=#FFFFFF;strokeColor=#111111;strokeWidth=2;fontColor=#111111;fontSize=17;
-判断：rhombus;fillColor=#F2F2F2;strokeColor=#111111;strokeWidth=2;fontSize=17;
+节点：fillColor=#FFFFFF;strokeColor=#111111;strokeWidth=2;fontColor=#111111;fontSize=18;fontFamily=SimSun;html=1;
+判断：rhombus;fillColor=#F2F2F2;strokeColor=#111111;strokeWidth=2;fontSize=18;fontFamily=SimSun;html=1;
 连线：edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#111111;strokeWidth=2;endArrow=block;endFill=1;
 ```
 
