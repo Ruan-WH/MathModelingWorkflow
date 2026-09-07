@@ -1,0 +1,10 @@
+﻿parameter,value,duration_s
+gravity_m_s2,9.700000,1.2541893915
+gravity_m_s2,9.800000,1.3916426693
+gravity_m_s2,9.900000,1.5227860779
+cloud_descent_m_s,2.900000,1.3281139607
+cloud_descent_m_s,3.000000,1.3916426693
+cloud_descent_m_s,3.100000,1.4513182670
+cloud_radius_m,9.500000,1.2720347357
+cloud_radius_m,10.000000,1.3916426693
+cloud_radius_m,10.500000,1.5105891637

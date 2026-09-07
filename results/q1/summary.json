@@ -1,0 +1,86 @@
+{
+  "parameters": {
+    "missile_initial": [
+      20000.0,
+      0.0,
+      2000.0
+    ],
+    "missile_speed": 300.0,
+    "uav_initial": [
+      17800.0,
+      0.0,
+      1800.0
+    ],
+    "uav_speed": 120.0,
+    "release_time": 1.5,
+    "fuse_delay": 3.6,
+    "gravity": 9.8,
+    "cloud_descent_speed": 3.0,
+    "cloud_radius": 10.0,
+    "cloud_lifetime": 20.0,
+    "target_center_xy": [
+      0.0,
+      200.0
+    ],
+    "target_radius": 7.0,
+    "target_height": 10.0
+  },
+  "missile_velocity": [
+    -298.51115706299674,
+    -0.0,
+    -29.851115706299673
+  ],
+  "release_point": [
+    17620.0,
+    0.0,
+    1800.0
+  ],
+  "explosion_time": 5.1,
+  "explosion_point": [
+    17188.0,
+    0.0,
+    1736.496
+  ],
+  "full_target": {
+    "intervals": [
+      [
+        8.056445489405732,
+        9.44808815870162
+      ]
+    ],
+    "boundary_roots": [
+      8.056445489405732,
+      9.44808815870162
+    ],
+    "duration": 1.3916426692958872,
+    "minimum_worst_distance": 4.716706699642286,
+    "minimum_time": 9.418667849944752,
+    "n_theta": 5760,
+    "coarse_step": 0.02
+  },
+  "center_point": {
+    "intervals": [
+      [
+        8.013006056740357,
+        9.44808815870162
+      ]
+    ],
+    "duration": 1.435082101961262
+  },
+  "bottom_center_point": {
+    "intervals": [
+      [
+        8.037890759320385,
+        9.44808815870162
+      ]
+    ],
+    "duration": 1.410197399381234
+  },
+  "verification": {
+    "convergence_file": "results/q1/convergence.csv",
+    "sensitivity_file": "results/q1/sensitivity.csv",
+    "plot_data_file": "results/q1/margin_curve.csv",
+    "projection_parameter_is_clipped_to_segment": true,
+    "effective_window_within_cloud_lifetime": true
+  }
+}

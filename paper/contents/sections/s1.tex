@@ -1,0 +1,51 @@
+\section{问题重述与分析}
+
+来袭导弹沿指向假目标的方向匀速飞行，无人机则在接令后选定固定航向和速度，并通过控制烟幕弹的投放与延时起爆，在导弹与真目标之间形成半径为 $10\,\mathrm{m}$ 的有效烟幕球。问题的核心并非烟幕球是否靠近真目标，而是烟幕球能否在有限寿命内切断导弹到真目标的视线。
+
+题目由五个递进问题构成。首先需在给定策略下建立统一的运动学和几何遮蔽判据；随后优化单弹参数，再依次扩展至同机多弹、多机协同和多导弹资源分配。本文在问题一中保留真目标半径 $7\,\mathrm{m}$、高度 $10\,\mathrm{m}$ 的圆柱几何，要求烟幕遮住完整目标在导弹视场中的投影。同时计算将目标简化为代表点的结果，用于衡量几何简化造成的偏差。
+
+问题一的输入参数均由题面给定，不含待优化变量。其计算链由导弹轨迹、无人机轨迹、烟幕弹自由落体、烟幕云团下沉和视线遮蔽五部分组成。由于遮蔽状态在阈值附近发生切换，采用事件根求解进入与离开时刻，可避免固定时间步长造成的系统误差。
+\endinput
+
+\section{模板的基本使用}
+
+\subsection{LaTeX 发行版和编辑器安装}
+
+要用 \LaTeX{} 来完成建模论文，首先要确保正确安装一个 \LaTeX{} 的发行版本。
+
+\begin{itemize}
+    \item Mac 下可用 Mac\TeX{}
+    \item Linux 下可用 \TeX{}Live ；
+    \item windows 下可用 \TeX{}Live 或 Mik\TeX{} ;
+\end{itemize}
+
+具体安装可以参考 \href{https://github.com/OsbertWang/install-latex-guide-zh-cn/releases/}{Install-LaTeX-Guide-zh-cn} 或者其它靠谱的文章。另外可以安装一个易用的编辑器，例如 \href{https://mirrors.tuna.tsinghua.edu.cn/github-release/texstudio-org/texstudio/LatestRelease/}{\TeX{}studio} 。
+
+使用该模板前，请阅读模板的使用说明文档。
+
+\subsection{文档类选项说明}
+
+根据要求，电子版论文提交时需去掉封面和编号页。可以加上 \verb|withoutpreface|  选项来实现，即：
+\begin{tcode}
+    \documentclass[withoutpreface]{cumcmthesis}
+\end{tcode}
+这样就能实现了。打印的时候有超链接的地方不需要彩色，可以加上 \verb|bwprint| 选项。
+
+在撰写论文的过程中可加上 \verb|draft| 选项以选择不嵌入图片来提高编译的速度，最终提交的电子版文档请去掉 \verb|draft| 选项以保证图片和代码被嵌入！若选择使用 \verb|draft| 选项请务必保证检查最终文档的图片和代码是否被嵌入，避免因图片和代码未被嵌入而影响参赛成绩。
+
+\subsection{目录说明}
+
+另外目录也是不需要的，将 \verb|\tableofcontents| 注释或删除，目录就不会出现了。
+
+\subsection{编译方式}
+
+编译记得用 \verb|xelatex|，而不是用 \verb|pdflatex|。在命令行编译的可以按如下方式编译：
+\begin{tcode}
+  xelatex main
+\end{tcode}
+或用 \verb|latexmk| 来编译，更推荐这种方式。
+\begin{tcode}
+  latexmk main
+\end{tcode}
+
+下面给出写作与排版上的一些建议。
