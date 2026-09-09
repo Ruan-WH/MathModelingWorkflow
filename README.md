@@ -4,7 +4,7 @@
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
 ![LaTeX](https://img.shields.io/badge/LaTeX-XeLaTeX-008080?logo=latex&logoColor=white)
-![Status](https://img.shields.io/badge/进度-问题二待审查-f0ad4e)
+![Status](https://img.shields.io/badge/进度-问题三待审查-f0ad4e)
 ![License](https://img.shields.io/badge/用途-学习与研究-blue)
 
 [查看当前论文](paper/main.pdf) · [查看数值结果](reports/RESULTS_REPORT.md) · [查看验收报告](reports/VERIFY_REPORT.md) · [查看任务进度](todo.md)
@@ -26,21 +26,21 @@
 
 ## 效果预览
 
-![问题二优化诊断图](figures/q2/q2_optimization_diagnostics.png)
+![问题三优化诊断图](figures/q3/q3_optimization_diagnostics.png)
 
-左图展示不同初值与外向航向盆地的优化过程，右图展示最优策略下完整圆柱目标的最坏视线距离及有效遮蔽区间。
+左图展示三弹联合优化的多盆地搜索结果，右图展示三枚烟幕弹对应的完整圆柱最坏视线距离及联合有效区间。
 
 ## 当前成果
 
 | 子问题 | 任务 | 核心结果 | 状态 |
 | --- | --- | --- | --- |
 | 问题一 | 给定策略下计算单枚烟幕弹的有效遮蔽时长 | 完整圆柱口径 `1.392 s` | 已批准 |
-| 问题二 | 优化 FY1 航向、速度、投放时刻与引信延时 | 最大有效遮蔽时长 `4.588 s` | 待审查 |
-| 问题三 | 单机三弹时序优化 | — | 未开始 |
+| 问题二 | 优化 FY1 航向、速度、投放时刻与引信延时 | 最大有效遮蔽时长 `4.588 s` | 已批准 |
+| 问题三 | 单机三弹时序优化 | 联合有效遮蔽时长 `6.403 s` | 待审查 |
 | 问题四 | 三机单弹协同优化 | — | 未开始 |
 | 问题五 | 多机、多弹、多目标资源分配 | — | 未开始 |
 
-问题二当前最优策略：航向角 `5.112023°`、飞行速度 `140 m/s`、投放时刻 `0.878620 s`、引信延时 `0.053112 s`，完整遮蔽区间为 `[0.931732, 5.519794] s`。
+问题三当前代表策略：航向角 `5.600000°`、飞行速度 `125 m/s`，三次投放与起爆时刻为 `0、1、2 s`，完整圆柱联合遮蔽区间为 `[1.000000, 7.403159] s`。同一最优时长对应多个航向与速度组合，当前参数按重叠裕量优先的辅助准则选取。
 
 ## 工作流
 

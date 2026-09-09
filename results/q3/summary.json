@@ -1,0 +1,134 @@
+{
+  "parameters": {
+    "missile_initial": [
+      20000.0,
+      0.0,
+      2000.0
+    ],
+    "missile_speed": 300.0,
+    "uav_initial": [
+      17800.0,
+      0.0,
+      1800.0
+    ],
+    "speed_min": 70.0,
+    "speed_max": 140.0,
+    "gravity": 9.8,
+    "cloud_descent_speed": 3.0,
+    "cloud_radius": 10.0,
+    "cloud_lifetime": 20.0,
+    "target_center_xy": [
+      0.0,
+      200.0
+    ],
+    "target_radius": 7.0,
+    "target_height": 10.0,
+    "minimum_release_gap": 1.0
+  },
+  "shared_uav_strategy": {
+    "heading_rad": 3.1354399999999996,
+    "heading_deg_from_positive_x_counterclockwise": 179.6474789164988,
+    "speed_m_s": 139.99828,
+    "velocity_m_s": [
+      -139.99563018068082,
+      0.8613554855266342,
+      0.0
+    ]
+  },
+  "bombs": [
+    {
+      "bomb": 1,
+      "release_time_s": 0.003,
+      "fuse_delay_s": 3.611,
+      "explosion_time_s": 3.6140000000000003,
+      "release_point_m": [
+        17799.58001310946,
+        0.0025840664565799027,
+        1800.0
+      ],
+      "explosion_point_m": [
+        17294.05579252702,
+        3.1129387246932563,
+        1736.1073271
+      ],
+      "effective_intervals_s": [
+        [
+          5.205021299424338,
+          9.039898521538392
+        ]
+      ],
+      "individual_duration_s": 3.834877222114054
+    },
+    {
+      "bomb": 2,
+      "release_time_s": 3.702,
+      "fuse_delay_s": 5.337,
+      "explosion_time_s": 9.039,
+      "release_point_m": [
+        17281.73617707112,
+        3.1887380074196,
+        1800.0
+      ],
+      "explosion_point_m": [
+        16534.579498796826,
+        7.785792233675246,
+        1660.4305119
+      ],
+      "effective_intervals_s": [
+        [
+          9.039,
+          11.630029535653325
+        ]
+      ],
+      "individual_duration_s": 2.591029535653325
+    },
+    {
+      "bomb": 3,
+      "release_time_s": 5.569,
+      "fuse_delay_s": 6.041,
+      "explosion_time_s": 11.61,
+      "release_point_m": [
+        17020.364335523787,
+        4.796888698897826,
+        1800.0
+      ],
+      "explosion_point_m": [
+        16174.650733602295,
+        10.000337186964222,
+        1621.1809631
+      ],
+      "effective_intervals_s": [
+        [
+          11.61,
+          12.814686750867763
+        ]
+      ],
+      "individual_duration_s": 1.2046867508677632
+    }
+  ],
+  "union_intervals_s": [
+    [
+      5.205021299424338,
+      12.814686750867763
+    ]
+  ],
+  "union_duration_s": 7.6096654514434245,
+  "selected_basin": "window_stitching",
+  "selection_rule": "maximize exact interval-union duration; use staggered detonation windows to join the first two intervals and extend the trailing edge",
+  "verification": {
+    "release_gaps_s": [
+      3.699,
+      1.867
+    ],
+    "minimum_release_gap_s": 1.0,
+    "all_release_gaps_feasible": true,
+    "all_explosions_above_ground": true,
+    "n_theta": 5760,
+    "time_root_scan_step_s": 0.005,
+    "seeds": [
+      2028,
+      2029,
+      2030
+    ]
+  }
+}

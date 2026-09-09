@@ -1,0 +1,155 @@
+{
+  "parameters": {
+    "missile_speed": 300.0,
+    "speed_min": 70.0,
+    "speed_max": 140.0,
+    "gravity": 9.8,
+    "cloud_descent_speed": 3.0,
+    "cloud_radius": 10.0,
+    "cloud_lifetime": 20.0,
+    "target_center_xy": [
+      0.0,
+      200.0
+    ],
+    "target_radius": 7.0,
+    "target_height": 10.0,
+    "minimum_release_gap": 1.0
+  },
+  "bombs": [
+    {
+      "uav": "FY1",
+      "missile": "M1",
+      "bomb": 1,
+      "heading_deg": 5.112023148207133,
+      "speed": 140.0,
+      "release_time": 0.878619601412594,
+      "delay": 0.053112383643653,
+      "explosion_time": 0.931731985056247,
+      "velocity": [
+        139.4431345423927,
+        12.474463074303696,
+        0.0
+      ],
+      "release_point": [
+        17922.51747129136,
+        10.960307774180835,
+        1800.0
+      ],
+      "explosion_point": [
+        17929.923628549648,
+        11.622856242731835,
+        1799.986177466048
+      ],
+      "intervals": [
+        [
+          0.9317321764536272,
+          5.519794336543692
+        ]
+      ],
+      "duration": 4.588062160090065,
+      "feasible": true
+    },
+    {
+      "uav": "FY2",
+      "missile": "M1",
+      "bomb": 1,
+      "heading_deg": 306.1909375490924,
+      "speed": 136.85323,
+      "release_time": 8.55122,
+      "delay": 3.98572,
+      "explosion_time": 12.536940000000001,
+      "velocity": [
+        80.80882477881336,
+        -110.44790808023454,
+        0.0
+      ],
+      "release_point": [
+        12691.014038625084,
+        455.5356394661367,
+        1400.0
+      ],
+      "explosion_point": [
+        13013.095387722497,
+        15.321203272584171,
+        1322.1587767998399
+      ],
+      "intervals": [
+        [
+          17.730837879483804,
+          21.567001516003888
+        ]
+      ],
+      "duration": 3.8361636365200837,
+      "feasible": true
+    },
+    {
+      "uav": "FY3",
+      "missile": "M1",
+      "bomb": 1,
+      "heading_deg": 122.4743123715745,
+      "speed": 92.96017,
+      "release_time": 31.73266,
+      "delay": 7.64581,
+      "explosion_time": 39.37847,
+      "velocity": [
+        -49.91230774023787,
+        78.4241974295733,
+        0.0
+      ],
+      "release_point": [
+        4416.149708663664,
+        -511.3916071944768,
+        700.0
+      ],
+      "explosion_point": [
+        4034.529687020275,
+        88.22490575452912,
+        413.55378827511
+      ],
+      "intervals": [
+        [
+          41.457952205439156,
+          43.690774197218786
+        ]
+      ],
+      "duration": 2.2328219917796304,
+      "feasible": true
+    }
+  ],
+  "missile_intervals": {
+    "M1": [
+      [
+        0.9317321764536272,
+        5.519794336543692
+      ],
+      [
+        17.730837879483804,
+        21.567001516003888
+      ],
+      [
+        41.457952205439156,
+        43.690774197218786
+      ]
+    ],
+    "M2": [],
+    "M3": []
+  },
+  "missile_durations": {
+    "M1": 10.657047788389779,
+    "M2": 0.0,
+    "M3": 0.0
+  },
+  "objective_sum_s": 10.657047788389779,
+  "release_gaps_s": {
+    "FY1": [],
+    "FY2": [],
+    "FY3": [],
+    "FY4": [],
+    "FY5": []
+  },
+  "all_release_gaps_feasible": true,
+  "all_bombs_feasible": true,
+  "n_theta": 5760,
+  "time_root_scan_step_s": 0.005,
+  "method": "pair screening + grouped continuous search + exact interval-union verification"
+}

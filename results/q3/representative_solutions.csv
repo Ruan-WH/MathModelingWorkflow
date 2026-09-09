@@ -1,0 +1,5 @@
+﻿case,heading_deg,speed_m_s,union_duration_s,bomb_1_2_overlap_s
+selected_robust_representative,5.600000,125.000000,6.4031594063,0.7012472716
+same_duration_speed_boundary,5.150000,140.000000,6.4031594063,0.3710077457
+nearby_heading_minus,5.500000,125.000000,6.3878423803,0.7412007672
+nearby_heading_plus,5.700000,125.000000,6.4031594063,0.6607453703

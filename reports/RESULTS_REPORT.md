@@ -70,3 +70,34 @@
 - 作图数据：results/q2/optimal_margin_curve.csv
 - 数据图：figures/q2/q2_optimization_diagnostics.pdf 与 PNG 预览
 - 复现命令：D:\Anaconda\python.exe code\q2_single_smoke_optimization.py --maxiter 90 --popsize 11
+
+## 问题 3
+
+### 三弹联合策略
+
+- 共享航向角：从 +x 轴逆时针 0.097738438 rad，即 5.600000°。
+- FY1 速度：125.000000 m/s；速度向量为 (124.403425,12.197862,0) m/s。
+- 三次投放时刻：0、1、2 s；三枚烟幕弹均即时起爆。
+- 投放/起爆点依次为 (17800,0,1800)、(17924.403425,12.197862,1800)、(18048.806850,24.395725,1800) m。
+- 第 1 枚有效区间：[4.847156695,7.403159406] s，时长 2.556002712 s。
+- 第 2 枚有效区间：[1.000000000,5.548403966] s，时长 4.548403966 s。
+- 第 3 枚在该代表航迹上未形成完整圆柱遮蔽区间。
+- 联合区间：[1.000000000,7.403159406] s；联合有效时长为 **6.403159406 s**，按竞赛精度报告为 **6.403 s**。
+
+### 非唯一性和验证
+
+- 每圆周角向采样从 90 增至 5760 点时，联合时长保持 6.403159406 s。
+- 5.15°、140 m/s 也达到相同联合时长，但前两枚弹重叠仅 0.371007746 s；所选 5.6°、125 m/s 方案的重叠为 0.701247272 s，抗时序扰动裕量更大。
+- 删除第 3 枚弹时联合时长不变，故其在当前代表方案中的边际贡献为零；删除第 1 或第 2 枚分别损失 1.854755440 s 和 3.847156695 s。
+- 三次投放间隔均为 1 s，起爆高度均为 1800 m，烟幕寿命和导弹到达时限约束全部通过。
+- 结果来自多盆地启发式搜索、时序边界构造和高密度复核，应视为经充分验证的最优候选。
+
+### 产物与复现
+
+- 程序：code/q3_three_smoke_optimization.py
+- 主结果：results/q3/summary.json
+- 填报文件：results/q3/result1.xlsx
+- 策略、收敛与边际贡献：results/q3/strategy.csv、convergence.csv、marginal_contributions.csv
+- 多盆地与参数非唯一性：results/q3/multistart.csv、optimization_history.csv、representative_solutions.csv
+- 数据图：figures/q3/q3_optimization_diagnostics.pdf 与 PNG 预览
+- 复现命令：D:\Anaconda\python.exe code\q3_three_smoke_optimization.py --maxiter 12 --popsize 5
