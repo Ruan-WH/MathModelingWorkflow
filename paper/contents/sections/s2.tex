@@ -14,34 +14,43 @@
 
 \begin{table}[H]
     \centering
-    \caption{问题一至五主要符号与含义}
+    \caption{主要符号与含义}
     \label{tab:q1-symbols}
-    \begin{tabular}{clc}
+    \renewcommand{\arraystretch}{1.16}
+    \setlength{\tabcolsep}{3pt}
+    \begin{tabularx}{\textwidth}{
+        >{\centering\arraybackslash}p{0.09\textwidth}
+        >{\raggedright\arraybackslash}X
+        >{\centering\arraybackslash}p{0.055\textwidth}
+        @{\hspace{1.2em}}
+        >{\centering\arraybackslash}p{0.09\textwidth}
+        >{\raggedright\arraybackslash}X
+        >{\centering\arraybackslash}p{0.055\textwidth}}
         \toprule[1.5pt]
-        符号 & 含义 & 单位 \\
+        符号 & \multicolumn{1}{c}{含义} & 单位 & 符号 & \multicolumn{1}{c}{含义} & 单位 \\
         \midrule[1pt]
-        $\bm m(t)$ & 导弹 M1 在时刻 $t$ 的位置 & m \\
-        $\bm u(t)$ & 无人机 FY1 在时刻 $t$ 的位置 & m \\
-        $\bm c(t)$ & 起爆后烟幕球心位置 & m \\
-        $\mathcal T$ & 真目标圆柱所占空间集合 & --- \\
-        $d(\bm p,t)$ & 球心到视线段 $\overline{\bm m(t)\bm p}$ 的最短距离 & m \\
-        $D(t)$ & 完整目标对应的最坏视线距离 & m \\
-        $R_s$ & 烟幕有效球半径 & m \\
-        $\theta$ & FY1 航向角，按 $x$ 轴正向逆时针计 & rad \\
-        $v$ & FY1 等高度飞行速度 & m/s \\
-        $t_r,t_e$ & 烟幕弹投放时刻与起爆时刻 & s \\
-        $\tau$ & 烟幕弹引信延时，$\tau=t_e-t_r$ & s \\
-        $\Omega_i$ & 第 $i$ 枚烟幕弹的完全遮蔽时间集合 & --- \\
-        $\Omega$ & 三枚烟幕弹遮蔽时间集合的并集 & --- \\
-        $\delta_{i,i+1}$ & 相邻两枚烟幕弹的投放时间间隔 & s \\
-        $a_{jk}$ & 第 $k$ 枚烟幕弹是否指派给导弹 $M_j$ & --- \\
-        $n_i$ & 无人机 $FY_i$ 的实际投弹数量 & 枚 \\
-        $\Omega_{jk}$ & 指向 $M_j$ 的第 $k$ 枚烟幕弹有效集合 & --- \\
-        $T_j$ & 对导弹 $M_j$ 的联合有效遮蔽时长 & s \\
-        $F$ & 三枚导弹联合遮蔽时长之和 & s \\
-        $T_{\mathrm{eff}}$ & 完整目标的有效遮蔽总时长 & s \\
+        $\bm m(t)$ & 导弹 M1 在时刻 $t$ 的位置 & m
+            & $\tau$ & 烟幕弹引信延时，$\tau=t_e-t_r$ & s \\
+        $\bm u(t)$ & 无人机 FY1 在时刻 $t$ 的位置 & m
+            & $\Omega_i$ & 第 $i$ 枚烟幕弹的完全遮蔽时间集合 & --- \\
+        $\bm c(t)$ & 起爆后烟幕球心位置 & m
+            & $\Omega$ & 三枚烟幕弹遮蔽时间集合的并集 & --- \\
+        $\mathcal T$ & 真目标圆柱所占空间集合 & ---
+            & $\delta_{i,i+1}$ & 相邻两枚烟幕弹的投放时间间隔 & s \\
+        $d(\bm p,t)$ & 球心到视线段 $\overline{\bm m(t)\bm p}$ 的最短距离 & m
+            & $a_{jk}$ & 第 $k$ 枚烟幕弹是否指派给导弹 $M_j$ & --- \\
+        $D(t)$ & 完整目标对应的最坏视线距离 & m
+            & $n_i$ & 无人机 $FY_i$ 的实际投弹数量 & 枚 \\
+        $R_s$ & 烟幕有效球半径 & m
+            & $\Omega_{jk}$ & 指向 $M_j$ 的第 $k$ 枚烟幕弹有效集合 & --- \\
+        $\theta$ & FY1 航向角，按 $x$ 轴正向逆时针计 & rad
+            & $T_j$ & 对导弹 $M_j$ 的联合有效遮蔽时长 & s \\
+        $v$ & FY1 等高度飞行速度 & m/s
+            & $F$ & 三枚导弹联合遮蔽时长之和 & s \\
+        $t_r,t_e$ & 烟幕弹投放时刻与起爆时刻 & s
+            & $T_{\mathrm{eff}}$ & 完整目标的有效遮蔽总时长 & s \\
         \bottomrule[1.5pt]
-    \end{tabular}
+    \end{tabularx}
 \end{table}
 \endinput
 
