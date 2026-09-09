@@ -38,7 +38,7 @@ T_4=\mu\!\left(\bigcup_{i\in\mathcal U_4}\Omega_i(\bm x_i)\right),\\[-1mm]
 
 \subsection{求解流程与投放策略}
 
-FY1 采用问题二发现的外向高速盆地负责早期窗口；FY2 从侧上方切入，负责中期窗口；FY3 因初始高度较低、距离真目标较近，承担晚期遮蔽。算法流程见\cref{fig:q4-flow}，最终策略见\cref{tab:q4-strategy}。
+FY1 采用问题二发现的外向高速盆地负责早期窗口；FY2 从侧上方切入，负责中期窗口；FY3 因初始高度较低、距离真目标较近，承担晚期遮蔽。算法流程如\cref{fig:q4-flow}所示，最终策略如\cref{tab:q4-strategy}所示；三机使用不同航向和速度获得互补时间窗，而不是重复覆盖同一阶段。
 
 \begin{figure}[!htbp]
  \centering
@@ -73,6 +73,8 @@ FY1 采用问题二发现的外向高速盆地负责早期窗口；FY2 从侧上
  =\boxed{10.657047788\ \mathrm{s}}.
 \end{equation}
 早、中、晚三段分工说明多机协同的主要收益来自空间可达性带来的时间窗互补，而非在同一时刻堆叠更多烟幕。具体投放点与起爆点已写入 \texttt{result2.xlsx}。
+
+三架无人机的单弹贡献与联合时间窗如\cref{fig:q4-diagnostics}所示。FY1、FY2 和 FY3 分别形成 $4.588$、$3.836$ 和 $2.233\,\mathrm{s}$ 的早、中、晚窗口，三段在时间轴上互不重叠，因此黑色联合窗口长度等于三段时长之和 $10.657\,\mathrm{s}$，与式中终算结果一致。
 
 \begin{figure}[!htbp]
  \centering

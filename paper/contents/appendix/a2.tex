@@ -1,34 +1,15 @@
-\section{结果文件与复现说明}
+\section{完整源程序}
 
-核心脚本及输出关系见\cref{tab:appendix-files}。所有脚本从项目根目录解析路径，计算结果分别写入 \texttt{results/q1} 至 \texttt{results/q5}，论文图写入 \texttt{paper/figures}。
+本附录用于汇集论文计算所用的完整源程序。当前稿先列出最能体现统一计算链的核心片段，包括圆柱目标边界离散、视线段距离计算、遮蔽事件求根、区间合并和多方案终算；最终提交前应将 \texttt{code/} 目录中的四个求解脚本完整纳入本附录或随支撑材料一并提交。
 
-\begin{table}[!htbp]
- \centering
- \caption{主要程序和结果文件}
- \label{tab:appendix-files}
- \begin{tabular}{ll}
-  \toprule[1.5pt]
-  文件 & 作用 \\
-  \midrule[1pt]
-  \texttt{q1\_smoke\_duration.py} & 问题一给定策略计算与灵敏度分析 \\
-  \texttt{q2\_single\_smoke\_optimization.py} & 问题二单弹多盆地优化 \\
-  \texttt{q3\_three\_smoke\_optimization.py} & 问题三共享航迹三弹优化 \\
-  \texttt{q4\_q5\_joint\_optimization.py} & 问题四、五协同求解与终算 \\
-  \texttt{result1.xlsx--result3.xlsx} & 问题三至五官方格式结果表 \\
-  \bottomrule[1.5pt]
- \end{tabular}
-\end{table}
+\subsection{问题一：视线段距离与遮蔽事件求根}
+\lstinputlisting[language=Python,firstline=65,lastline=176,caption={问题一核心计算程序}]{../code/q1_smoke_duration.py}
 
-在已安装 NumPy、SciPy 和 Matplotlib 的 Python 环境中，可在项目根目录执行相应脚本。最终论文使用 XeLaTeX 连续编译两遍，以更新交叉引用和页码。Excel 文件由同一份 JSON 结果自动填入官方模板，因此不需要人工复制坐标。
-\endinput
-\section{蒙特卡洛算法--matlab 代码}
+\subsection{问题二：单弹有效区间与优化目标}
+\lstinputlisting[language=Python,firstline=109,lastline=193,caption={问题二核心计算程序}]{../code/q2_single_smoke_optimization.py}
 
-\begin{lstlisting}[language=matlab]
-% 蒙特卡洛估算圆周率
-N = 1e6; % 随机点数量
-x = rand(N,1);
-y = rand(N,1);
-inside = (x.^2 + y.^2) <= 1;
-pi_est = 4 * sum(inside) / N;
-fprintf('估算的值: %.6f\n', pi_est);
-\end{lstlisting}
+\subsection{问题三：多弹区间合并与联合评价}
+\lstinputlisting[language=Python,firstline=154,lastline=229,caption={问题三核心计算程序}]{../code/q3_three_smoke_optimization.py}
+
+\subsection{问题四、问题五：协同方案终算与约束检查}
+\lstinputlisting[language=Python,firstline=167,lastline=224,caption={问题四、问题五核心计算程序}]{../code/q4_q5_joint_optimization.py}

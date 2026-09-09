@@ -46,7 +46,7 @@
 
 真实目标由多个阈值事件和区间并运算构成，具有大面积零值区、多个航向盆地和窄时间窗。搜索阶段先用平滑遮蔽概率近似引导差分进化，再在全航向、外向和内向扇区执行多初值搜索；同时加入首尾时间窗拼接构造，避免种群遗漏靠近区间衔接边界的高质量策略。差分进化适合处理不可导、多峰连续优化问题\cite{storn1997de}。
 
-候选排序使用真实几何判据：计算每枚烟幕球到完整圆柱各条视线段的最大距离，以 Brent 法求解 $D_i(t)=10$ 的进出事件\cite{brent1973algorithms}，再合并全部有效区间。最终以每个圆周 $5760$ 个角向点和 $0.005\,\mathrm{s}$ 的扫描步长复核。流程见\cref{fig:q3-flow}。
+候选排序使用真实几何判据：计算每枚烟幕球到完整圆柱各条视线段的最大距离，以 Brent 法求解 $D_i(t)=10$ 的进出事件\cite{brent1973algorithms}，再合并全部有效区间。最终以每个圆周 $5760$ 个角向点和 $0.005\,\mathrm{s}$ 的扫描步长复核。完整流程如\cref{fig:q3-flow}所示。
 
 \begin{figure}[!htbp]
  \centering
@@ -61,7 +61,7 @@
 \begin{equation}
  \bm v_U=(-139.995630,0.861355,0)^{\mathsf T}\,\mathrm{m/s}.
 \end{equation}
-三次投放分别发生在 $0.003$、$3.702$ 和 $5.569\,\mathrm{s}$，相邻间隔为 $3.699$ 和 $1.867\,\mathrm{s}$。具体策略见\cref{tab:q3-strategy}。
+三次投放分别发生在 $0.003$、$3.702$ 和 $5.569\,\mathrm{s}$，相邻间隔为 $3.699$ 和 $1.867\,\mathrm{s}$。具体策略如\cref{tab:q3-strategy}所示；三枚弹的单弹时长依次递减，但第三枚仍能补充末端时间窗，因而具有正边际收益。
 
 \begin{table}[!htbp]
  \centering
@@ -90,10 +90,12 @@
 \end{equation}
 与早投边界候选相比，新方案通过延迟起爆把三个云团依次布置在 M1 视线前方，第三枚弹获得正边际收益并延长尾部窗口。该方案同步写入 \texttt{result1.xlsx}，并作为问题五中 FY1 对 M1 的子策略。
 
+不同搜索入口的最优值与三弹区间拼接关系如\cref{fig:q3-diagnostics}所示。图（a）表明时间窗拼接策略取得 $7.610\,\mathrm{s}$，明显优于全航向及单一扇区随机搜索；图（b）显示三段有效区间在端点附近依次重叠，使单弹窗口连续合并为 $[5.205021,12.814687]$，从图形上验证了并集时长的计算。
+
 \begin{figure}[!htbp]
  \centering
  \includegraphics[width=0.96\textwidth]{q3_optimization_diagnostics.pdf}
- \caption{问题三多盆地搜索与三弹最坏视线距离}
+ \caption{问题三多盆地搜索与三弹有效区间拼接}
  \label{fig:q3-diagnostics}
 \end{figure}
 

@@ -1,35 +1,27 @@
-\section{核心数值算法}
+\section{支撑材料文件列表}
 
-本文程序统一采用“粗扫描定位事件区间、Brent 法细化阈值根、区间排序合并”的计算链。对每枚烟幕弹，先在 $[t_e,\min(t_e+20,t_M)]$ 上计算 $D(t)-10$；若相邻网格点异号，则求解进入或离开事件。将所有事件点与区间端点排序后，对各小区间中点重新判断遮蔽状态，获得单弹有效集合。多弹情形再按起点排序，依次合并相交或相接区间。
+论文支撑材料按照“程序、计算结果、图形源文件和AI工具使用记录”分类整理，主要文件见\cref{tab:supporting-materials}。各程序均从项目根目录运行，计算结果写入对应的 \texttt{results/q1} 至 \texttt{results/q5} 目录。
 
-问题五的分层算法可概括为：
-\begin{enumerate}
- \item 对全部无人机--导弹组合运行低成本单弹搜索，构造可达性与收益候选库；
- \item 以新增区间并集长度为边际收益，逐步选择无人机、导弹和弹位；
- \item 对同一无人机的航向、速度施加共享约束，对同机投放时刻施加 $1\,\mathrm{s}$ 间隔；
- \item 在每个导弹分组内连续细化，再删除边际收益为零且不提供鲁棒裕量的烟幕弹；
- \item 使用 $5760$ 点圆柱边界和事件求根完成统一终算。
-\end{enumerate}
-\endinput
-\section{模板所用宏包}
-
-\begin{table}[htbp]
-  \centering
-  \caption{宏包列表}
-  \begin{tabular}{ccccc}
-      \toprule
-      \multicolumn{5}{c}{模板中已加载宏包} \\
-      \midrule
-      ifxetex & ctex & geometry & amsmath & amsfonts \\
-      amssymb & bm & xcolor & graphicx & float \\
-      array & longtable & booktabs & tabularx & multirow \\
-      bigstrut & bigdelim & cprotect & listings & url \\
-      subcaption & tocloft & setspace & caption & enumitem \\
-      ulem & calc & appendix & etoolbox & hyperref \\
-      cleveref & & & & \\
-      \bottomrule
-  \end{tabular}%
-  \label{tab:addlabel}%
-\end{table}
-
-以上宏包都已加载，别重复加载。
+\begin{longtable}{p{0.34\textwidth}p{0.58\textwidth}}
+ \caption{支撑材料文件列表}\label{tab:supporting-materials}\\
+ \toprule[1.5pt]
+ 文件或目录 & 内容说明 \\
+ \midrule[1pt]
+ \endfirsthead
+ \toprule[1.5pt]
+ 文件或目录 & 内容说明 \\
+ \midrule[1pt]
+ \endhead
+ \path{code/q1_smoke_duration.py} & 问题一给定投放策略计算、事件求根与灵敏度分析程序 \\
+ \path{code/q2_single_smoke_optimization.py} & 问题二单枚烟幕弹多盆地优化程序 \\
+ \path{code/q3_three_smoke_optimization.py} & 问题三共享航迹约束下的三弹时序优化程序 \\
+ \path{code/q4_q5_joint_optimization.py} & 问题四、问题五多机多弹协同求解与高精度终算程序 \\
+ \path{results/q1--q5/} & 各问的汇总结果、收敛记录、约束检查、策略表和遮蔽区间数据 \\
+ \path{results/q3/result1.xlsx} & 问题三官方格式结果表 \\
+ \path{results/q4/result2.xlsx} & 问题四官方格式结果表 \\
+ \path{results/q5/result3.xlsx} & 问题五官方格式结果表 \\
+ \path{diagrams/q1--q5/} & 各问技术路线图的 DrawIO 源文件及 PDF、PNG 导出文件 \\
+ \path{figures/q1--q5/} & 根据真实计算数据生成的诊断图与结果图 \\
+ \path{supporting_materials/AI_tool_usage_record.md} & AI工具名称、使用环节、用途及人工核验方式记录 \\
+ \bottomrule[1.5pt]
+\end{longtable}
